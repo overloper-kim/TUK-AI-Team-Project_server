@@ -3,15 +3,16 @@ pub mod routes;
 use axum:: {
     Router,
 };
-
 use std::{net::SocketAddr};
-use routes::simulation::get_sim_config;
+use routes::simulation::simulation;
+
 use std::{env};
 
 #[tokio::main]
 async fn main() {
     // 라우터 생성
-    let app: Router = get_sim_config();
+    let app: Router = simulation();
+
     // 서버 바인딩 설정
     let default_addr: SocketAddr = "127.0.0.1:3000".parse().unwrap();
     let addr = split_args(default_addr);
