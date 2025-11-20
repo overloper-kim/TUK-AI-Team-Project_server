@@ -10,3 +10,8 @@ pub struct SimConfig {
     pub frequency: u8,
     pub learn: u16,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct SimStop {
+    pub sim_state: String,
+}
