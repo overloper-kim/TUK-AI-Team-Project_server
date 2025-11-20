@@ -1,21 +1,27 @@
 pub mod routes;
+pub mod service;
+mod models;
 
 use axum:: {
-    Router,
+    Router, http::Method,
 };
 use std::{net::SocketAddr};
 use routes::simulation::simulation;
+use tower_http::cors::{AllowOrigin, Any, CorsLayer};
 
 use std::{env};
 
 #[tokio::main]
 async fn main() {
-    // 라우터 생성
-    let app: Router = simulation();
+    // cors 설정
+    let cors = CorsLayer::new().allow_origin(AllowOrigin::any()).allow_methods([Method::GET, Method::POST, Method::OPTIONS]).allow_headers(Any);
 
     // 서버 바인딩 설정
     let default_addr: SocketAddr = "127.0.0.1:3000".parse().unwrap();
     let addr = split_args(default_addr);
+
+    // 라우터 생성
+    let app: Router = simulation().layer(cors);
 
     axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(),app).await.unwrap();
 }
