@@ -7,6 +7,7 @@ use axum:: {
 };
 use std::{net::SocketAddr};
 use routes::simulation::simulation;
+use routes::learning::learning;
 use tower_http::cors::{AllowOrigin, Any, CorsLayer};
 
 use std::{env};
@@ -21,7 +22,8 @@ async fn main() {
     let addr = split_args(default_addr);
 
     // 라우터 생성
-    let app: Router = simulation().layer(cors);
+    let app: Router = Router::new().merge(simulation().layer(cors))
+    .merge(learning());
 
     axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(),app).await.unwrap();
 }

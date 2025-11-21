@@ -1,5 +1,5 @@
 use axum:: { routing::get, routing::post, Router };
-use crate::service::simulation_handler::{self, sim_stop_handler};
+use crate::service::simulation_handler::{self};
 
 pub fn simulation() -> Router {
     Router::new().route("/configure", get("check")).
